@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [test]">
+  <parameter name="browser" value="FX"/>
+  <parameter name="localRc" value="true"/>
+  <parameter name="url" value="https://login.xero.com/"/>
+  <parameter name="platform" value="web"/>
+  <listeners>
+    <listener class-name="xero.conf.ConfigurationListener"/>
+  </listeners>
+  <test name="Default test(failed)">
+    <classes>
+      <class name="xero.test.me.TestTheTester">
+        <methods>
+          <include name="setUp"/>
+          <include name="testConfiguration"/>
+        </methods>
+      </class> <!-- xero.test.me.TestTheTester -->
+    </classes>
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [test] -->
