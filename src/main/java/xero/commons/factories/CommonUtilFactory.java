@@ -16,19 +16,13 @@ import xero.conf.factory.XeroAbstractFactory;
 import xero.invoice.contracts.InvoiceActions;
 import xero.invoice.impl.InvoiceActionsImpl;
 
-public class ActionFactory extends XeroAbstractFactory{
-	final static Logger logger = Logger.getLogger(ActionFactory.class);
+public class CommonUtilFactory extends XeroAbstractFactory{
+	final static Logger logger = Logger.getLogger(CommonUtilFactory.class);
 	@Override
 	public ActionSteps getActions(FACTORY_CRITERIA FACTORY_CRITERIA,WebDriver driver) {
 		// TODO Auto-generated method stub
-		if(driver == null){
-			logger.error("Driver has not been initialized");
-			throw new NullPointerException();
-		}
 		
-		ActionSteps actions = null;
-		actions = new WebActions(driver);
-		return actions;
+		return null;
 	}
 
 	@Override
@@ -42,7 +36,12 @@ public class ActionFactory extends XeroAbstractFactory{
 	public CommonUtils getCommonUtils(FACTORY_CRITERIA FACTORY_CRITERIA,
 			ActionSteps actions) {
 		// TODO Auto-generated method stub
-		return null;
+		if(actions == null){
+			logger.error("actions has not been initialized");
+			throw new NullPointerException();
+		}		
+		CommonUtils commonUtils = new CommonUtilsImpl(actions);		
+		return commonUtils;
 	}
 
 	@Override

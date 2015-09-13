@@ -6,8 +6,13 @@
 <parameter name="url" value="https://login.xero.com/"></parameter>
 <parameter name="platform" value="web"></parameter>
 <parameter name="browser" value="FX"></parameter>
-
+<parameter name="user" value="rafcasto@gmail.com"></parameter>
+<parameter name="password" value="rafael88"></parameter>
 <parameter name="localRc" value="true"></parameter>
+<!-- <parameter name="hub" value="http://rafcasto:902c7bfc-6344-4b58-810e-f6f5e7a27c62@ondemand.saucelabs.com:80/wd/hub"></parameter> -->
+<parameter name="hub" value="http://172.80.0.234:4444/wd/hub"></parameter>
+<parameter name="sauceLab" value="true"></parameter>
+
 
 
 <test name="test1">

@@ -15,7 +15,10 @@ public class ConfigurationListener implements ISuiteListener {
 	private String port = "4040";
 	private String endPointUrl = "localhost/service1";
 	private String localRc = "false";
-	
+	private String password = "rafael88";
+	private String user = "rafcasto@gmail.com";
+	private String hub = "localhost";
+	private String sauceLab = "false";
 	public void onFinish(ISuite arg0) {
 		// TODO Auto-generated method stub
 		
@@ -40,7 +43,10 @@ public class ConfigurationListener implements ISuiteListener {
 		port = isuit.getParameter("port") != null ? isuit.getParameter("port") : port;
 		endPointUrl = isuit.getParameter("endPointUrl") != null ? isuit.getParameter("endPointUrl") : endPointUrl;
 		localRc = isuit.getParameter("localRc") != null ? isuit.getParameter("localRc") : localRc;
-		
+		user = isuit.getParameter("user") != null ? isuit.getParameter("user") : user;
+		password = isuit.getParameter("password") != null ? isuit.getParameter("password") : password;
+		hub = isuit.getParameter("hub") != null ? isuit.getParameter("hub") : hub;
+		sauceLab = isuit.getParameter("sauceLab") != null ? isuit.getParameter("sauceLab") : sauceLab;
 	}
 	
 	/**
@@ -53,6 +59,11 @@ public class ConfigurationListener implements ISuiteListener {
 		configurationPojo.setPlatform(platform);
 		configurationPojo.setPort(port);
 		configurationPojo.setLocalRc(this.getBoolean(localRc));
+		configurationPojo.setUser(user);
+		configurationPojo.setPassword(password);
+		configurationPojo.setHub(hub);
+		configurationPojo.setSauceLab(sauceLab);
+		
 	}
 	
 	/**

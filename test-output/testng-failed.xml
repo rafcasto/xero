@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite guice-stage="DEVELOPMENT" name="Failed suite [test]">
-  <parameter name="browser" value="FX"/>
+  <parameter name="password" value="rafael88"/>
+  <parameter name="hub" value="http://rafcasto:902c7bfc-6344-4b58-810e-f6f5e7a27c62@ondemand.saucelabs.com:80/wd/hub"/>
+  <parameter name="browser" value="IE"/>
   <parameter name="localRc" value="true"/>
+  <parameter name="sauceLab" value="true"/>
+  <parameter name="user" value="rafcasto@gmail.com"/>
   <parameter name="url" value="https://login.xero.com/"/>
   <parameter name="platform" value="web"/>
   <listeners>
@@ -10,12 +14,13 @@
   </listeners>
   <test name="Default test(failed)">
     <classes>
-      <class name="xero.test.me.TestTheTester">
+      <class name="xero.test.me.TEST_001_Default_CreateInvoice">
         <methods>
           <include name="setUp"/>
+          <include name="closeDriver"/>
           <include name="testConfiguration"/>
         </methods>
-      </class> <!-- xero.test.me.TestTheTester -->
+      </class> <!-- xero.test.me.TEST_001_Default_CreateInvoice -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [test] -->

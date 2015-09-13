@@ -3,7 +3,7 @@ package xero.invoice.pojo;
 
 public class InvoicePojo {
 
-	
+
 	private String item;   
 	private String description;
 	private String qty;
@@ -13,6 +13,7 @@ public class InvoicePojo {
 	private String taxt_rate;
 	private String region;
 	private String ammount;
+		
 	public String getItem() {
 		return item;
 	}

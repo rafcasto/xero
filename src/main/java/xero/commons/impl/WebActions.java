@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -180,6 +181,33 @@ public class WebActions implements ActionSteps{
 		// TODO Auto-generated method stub
 		driver.manage().timeouts().implicitlyWait(timeToExpire, TimeUnit.SECONDS);
 		this.findElement(locator, timeToExpire, WAIT_METHOD, logMessage).sendKeys(Keys.TAB);
+		logger.info("send tab....");
 	}
+
+	public void openUrl(String url, String logMessage) {
+		// TODO Auto-generated method stub
+		driver.get(url);
+		logger.info("Opening application: " + url + " message:" +logMessage );
+		
+	}
+
+	public String getPageContet() {
+		// TODO Auto-generated method stub
+		return driver.getPageSource();
+	}
+
+	public void setAttribute(WebElement element, String att, String value) {
+		// TODO Auto-generated method stub
+        //driver.executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",element,att,value );
+        JavascriptExecutor js= null;
+        if(driver instanceof JavascriptExecutor){
+        	js = (JavascriptExecutor) driver;
+        }
+        js.executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",element,att,value );
+        
+		logger.info("setting value javascript: attribute" + att + " value:" +value );
+	}
+
+	
 
 }

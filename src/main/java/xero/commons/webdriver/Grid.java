@@ -1,10 +1,15 @@
 package xero.commons.webdriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import xero.commons.enums.WEB_DRIVER_BROWSER;
 import xero.commons.enums.WEB_DRIVER_PLATFORM;
@@ -87,5 +92,22 @@ public class Grid {
 	private  void initRemoteWebDriver(String browser){
 		//code for remote webDriver 
 		//if time i will implement this part
+		 DesiredCapabilities capability = null;
+		if(WEB_DRIVER_BROWSER.IE.getBrowser().equalsIgnoreCase(browser)){
+			capability = DesiredCapabilities.internetExplorer();
+		}else if(WEB_DRIVER_BROWSER.FX.getBrowser().equalsIgnoreCase(browser)){
+			capability = DesiredCapabilities.firefox();
+		}else if(WEB_DRIVER_BROWSER.CR.getBrowser().equalsIgnoreCase(browser)){
+			capability = DesiredCapabilities.chrome();
+		}else if(WEB_DRIVER_BROWSER.AD.getBrowser().equalsIgnoreCase(browser)){
+			//if possible loading android driver this might be remove since android driver might need some other configuration
+		}
+		try {									
+			driver =  new RemoteWebDriver(new URL(ConfigurationListener.configurationPojo.getHub()),capability);						
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			logger.error("Remote driver not loaded: " + e.toString());
+			e.printStackTrace();
+		}
 	}
 }

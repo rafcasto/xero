@@ -3,25 +3,37 @@ package xero.invoice.impl;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.apache.xalan.templates.ElemMessage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 import xero.commons.contracts.ActionSteps;
+import xero.commons.contracts.CommonUtils;
 import xero.commons.enums.WAIT_METHOD;
 import xero.commons.impl.WebActions;
+import xero.conf.ConfigurationListener;
 import xero.invoice.contracts.InvoiceActions;
+import xero.invoice.enums.INVOICE_CREATE_HEADER;
 import xero.invoice.enums.INVOICE_TABLE_COLS;
+import xero.invoice.pojo.InvoiceCreateHeadersPojo;
 import xero.invoice.pojo.InvoicePojo;
 
-public class InvoiceActionsImpl implements InvoiceActions {
+public class InvoiceActionsImpl  implements InvoiceActions {
 	private ActionSteps actions;
 	private InvoicePojo invoicePojo;
+	private CommonUtils commonUtils;
+	private int timeToExpire = 30; 
 	final static Logger logger = Logger.getLogger(InvoiceActionsImpl.class);
 	public InvoiceActionsImpl(ActionSteps actions){
 		this.actions = actions;
 	}
 	
+	public InvoiceActionsImpl(ActionSteps actions,CommonUtils commonUtils){
+		this.commonUtils = commonUtils;
+		this.actions = actions;
+	}
 	
 	public void invoiceTableUpdate(By locator, int timeToExpire,
 			WAIT_METHOD WAIT_METHOD, int rowNum,
@@ -128,6 +140,87 @@ public class InvoiceActionsImpl implements InvoiceActions {
 					actions.sendText(By.xpath(".//input[@id='ext-comp-1004']"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, item, "filling description  " + item );
 					actions.pressTab(By.xpath(".//input[@id='ext-comp-1004']"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, "Press tab");
 					logger.info("set qty value: " + logMessage);
+	}
+
+	/**
+	 * Creating an invoice 
+	 * @param logMessage 
+	 * @param hashmap values needed to create a new Invoice
+	 * */
+	public void goToInvoice(String logMessage) {
+		// TODO Auto-generated method stub
+		this.commonUtils.login(ConfigurationListener.configurationPojo.getUser(),ConfigurationListener.configurationPojo.getPassword(), logMessage);
+		actions.clickOnElemment(By.linkText("Accounts"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, "Click on Accounts");
+		actions.clickOnElemment(By.linkText("Sales"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, "Click on Sales");
+		actions.clickOnElemment(By.partialLinkText("New"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, "create a new invoice ");
+
+	}
+	
+	
+	/**
+	 * mapping hashmap to pojo header
+	 * */
+	private InvoiceCreateHeadersPojo setHeaders(HashMap<Object, Object> headersMap){
+		InvoiceCreateHeadersPojo headers = new InvoiceCreateHeadersPojo();
+		headers.setTo( (headersMap.get(INVOICE_CREATE_HEADER.TO) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.TO) :  "" );
+		headers.setDate( (headersMap.get(INVOICE_CREATE_HEADER.DATE) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.DATE) :  "" );
+		headers.setDue_date( (headersMap.get(INVOICE_CREATE_HEADER.DUE_DATE) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.DUE_DATE) :  "" );
+		headers.setInvoice_number((headersMap.get(INVOICE_CREATE_HEADER.INVOICE_NUMBER) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.INVOICE_NUMBER) :  "" );
+		headers.setReference((headersMap.get(INVOICE_CREATE_HEADER.REFERENCE) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.REFERENCE) :  "" );
+		headers.setBranding((headersMap.get(INVOICE_CREATE_HEADER.BRANDING) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.BRANDING) :  "" );
+		headers.setCurrency((headersMap.get(INVOICE_CREATE_HEADER.CURRENCY) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.CURRENCY) :  "" );
+		headers.setAmmount_are((headersMap.get(INVOICE_CREATE_HEADER.AMMOUNT_ARE) != null) ? (String) headersMap.get(INVOICE_CREATE_HEADER.AMMOUNT_ARE) :  "" );
+		return headers;
+	}
+
+	public void provideInvoiceHeaders(HashMap<Object, Object> headers,
+			String logMessage) {
+		// TODO Auto-generated method stub
+		InvoiceCreateHeadersPojo headersPojo = this.setHeaders(headers);
+		if(!headersPojo.getTo().equals("")){
+			actions.sendText(By.xpath("//input[starts-with(@id, 'PaidToName')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getTo(), logMessage);
+			actions.pressTab(By.xpath("//input[starts-with(@id, 'PaidToName')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, logMessage);
+		}if(!headersPojo.getDate().equals("")){
+			actions.sendText(By.xpath("//input[starts-with(@id, 'InvoiceDate')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getDate(), logMessage);
+		}if(!headersPojo.getDue_date().equals("")){
+			actions.sendText(By.xpath("//input[starts-with(@id, 'DueDate')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getDue_date(), logMessage);			
+		}if(!headersPojo.getInvoice_number().equals("")){
+			actions.sendText(By.xpath("//input[starts-with(@id, 'InvoiceNumber')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getInvoice_number(), logMessage);			
+		}if(!headersPojo.getReference().equals("")){
+			actions.sendText(By.xpath("//input[starts-with(@id, 'Reference')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getReference(), logMessage);
+		}if(!headersPojo.getBranding().equals("")){
+			actions.sendText(By.id("TemplateDropDown_value"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getBranding(), logMessage);			
+		}if(!headersPojo.getCurrency().equals("")){
+			this.setCurrency(headersPojo.getCurrency(), logMessage);
+			//actions.sendText(By.xpath("//input[starts-with(@id, 'Currency')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, headersPojo.getCurrency(), logMessage);
+		}if(!headersPojo.getAmmount_are().equals("")){
+			//i will comeback to this later 
+		}
+	}
+
+	public void approveInvoice(String logMesage) {
+		// TODO Auto-generated method stub
+		this.actions.clickOnElemment(By.linkText("Approve"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, logMesage);
+	}
+	
+	
+	private void setCurrency(String currency,String logMessage){
+		WebElement element = actions.findElement(By.id("currencyField"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, logMessage);
+		System.out.println("total of input: " + element.findElements(By.tagName("input")).size());
+		element.click();
+		int i = 0;
+		for(WebElement input : element.findElements(By.tagName("input"))){
+			System.out.println("value " + input.getText() + " value " + input.getAttribute("value"));
+			if(i ==1){
+				input.clear();
+				input.sendKeys(currency);
+//				actions.setAttribute(element, "value", currency);			
+				input.sendKeys(Keys.TAB);
+			}
+			i++;
+			
+		}
+		//actions.sendText(By.xpath("//input[starts-with(@id, 'Currency')]"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, currency, logMessage);
 	}
 	
 }

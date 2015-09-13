@@ -11,7 +11,34 @@ public class ConfigurationPojo {
 	private String port; // when testing web or APIs to determine the port on wich the application is running 	
 	private String endPointUrl; // when testing web services or APIs this param will be needed 
 	private boolean localRc; //Flag that control if the scripts will be run at local computer or in a remote computer
-	
+	private String user;	
+	private String password;
+	private String hub;
+	private String sauceLab;
+	public String getSauceLab() {
+		return sauceLab;
+	}
+	public void setSauceLab(String sauceLab) {
+		this.sauceLab = sauceLab;
+	}
+	public String getHub() {
+		return hub;
+	}
+	public void setHub(String hub) {
+		this.hub = hub;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 	public String getUrl() {
 		return url;
