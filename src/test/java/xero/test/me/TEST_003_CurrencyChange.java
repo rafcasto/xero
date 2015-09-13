@@ -3,6 +3,7 @@ package xero.test.me;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -37,7 +38,7 @@ public class TEST_003_CurrencyChange {
 	private int timeToExpire = 30;
 	private HashMap<Object, Object> invoiceMap = new HashMap<Object, Object>();
 	//test data grid item 
-	private String item1 = "TSM - Black: T-Shirt Medium Black";
+	private String item1 = "BOOK: Fish out of Water: Finding Your Brand";
 	private String currency = "EUR Euro";
 	@BeforeMethod
 	public void setUp(){
@@ -59,22 +60,21 @@ public class TEST_003_CurrencyChange {
 				invoiceMap.put(INVOICE_CREATE_HEADER.CURRENCY, currency);
 				//sending invoice headers data 
 				this.invoiceActions.provideInvoiceHeaders(invoiceMap, "providing header Information...");
-						
+					
 				//Invoice Table
 				invoiceMap.put(INVOICE_TABLE_COLS.ITEM, item1);		
 				invoiceMap.putIfAbsent(INVOICE_TABLE_COLS.QTY, "2");
 				//setting values for invoice table row 1
-				this.invoiceActions.invoiceTableUpdate(By.id("lineItems"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, 1, invoiceMap, "Setting values for invoice table");			
-				//setting values for invoice table row 2
-				invoiceMap.putIfAbsent(INVOICE_TABLE_COLS.QTY, "4");
-				this.invoiceActions.invoiceTableUpdate(By.id("lineItems"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, 2, invoiceMap, "Setting values for invoice table");
-				//setting values for invoice table row 3
-				invoiceMap.putIfAbsent(INVOICE_TABLE_COLS.QTY, "9");
-				this.invoiceActions.invoiceTableUpdate(By.id("lineItems"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, 3, invoiceMap, "Setting values for invoice table");		
+				this.invoiceActions.invoiceTableUpdate(By.id("lineItems"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, 1, invoiceMap, "Setting values for invoice table");
+				
+						
 				//attempting to approve the invoice 
 				this.invoiceActions.approveInvoice("Attempting to approve Invoice...");
 				//review screen assertion methods
-		
+				// the fallowin is not a good practice but, because the lack of time 
+				//i am doing the validation without any encapsulation hope you understand 
+				this.actionsSteps.waitForElement(By.partialLinkText("Email"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, "waiting for email button");
+				Assert.assertTrue(actionsSteps.getPageContet().contains("EUR"),"test case failed");
 	}
 	
 	@AfterMethod

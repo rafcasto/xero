@@ -3,6 +3,7 @@ package xero.test.me;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -73,6 +74,7 @@ public class TEST_002_InvalidScenario_Items {
 				//attempting to approve the invoice 
 				this.invoiceActions.approveInvoice("Attempting to approve Invoice...");
 				//review screen assertion methods
+				Assert.assertTrue(actionsSteps.getPageContet().contains("items available to sell"),"test case failed");
 		
 	}
 	

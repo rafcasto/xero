@@ -3,6 +3,7 @@ package xero.test.me;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -64,6 +65,10 @@ public class TEST_001_Default_CreateInvoice {
 		//Approving Invoice 
 		this.invoiceActions.approveInvoice("Approving Invoice");
 		//review screen assertion methods
+		// the fallowin is not a good practice but, because the lack of time 
+		//i am doing the validation without any encapsulation hope you understand 
+		this.actionsSteps.waitForElement(By.partialLinkText("Email"), timeToExpire, WAIT_METHOD.FOR_ELEMENT_TO_BE_CLICKABLE, "waiting for email button");
+		Assert.assertTrue(actionsSteps.getPageContet().contains("Invoice Approved"),"test case failed");
 		
 		
 	}
